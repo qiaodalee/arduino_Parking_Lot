@@ -33,11 +33,17 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
+  // check parking space
+  if ( isFull()){
+    displayMessage("Full!Please wait", 0, 0);
+    return;
+  }
+
   // check detect
   if ( isObstacle()){
 
     // car is detected
-    displayMessage("Welcome!", 0, 0);
+    displayMessage("Welcome!"+ (carSize - count) +" spaces", 0, 0);
     displayMessage("Enter RFID.", 0, 1);
 
     // RFID card is close
@@ -53,43 +59,18 @@ void loop() {
       if(isStoredCard(newCard)){
         displayMessage("GoodBye!!", 0, 0);
 
-        // RFID is valid, then open the door
-        turn(0);
-
-        // check detect
-        while ( isObstacle()){
-          delay(1000);
-        }
-
-        // car leave
-        turn(90);
-
+        open()
         del(newCard);
       }
       else{
-
-        // check parking space
-        if ( isFull()){
-          displayMessage("Full!Please wait", 0, 0);
-          break;
-        }
-
-        setNew(newCard);
         displayMessage("Welcome!!", 0, 0);
-        turn(0);
-
-        // check detect
-        while ( isObstacle()){
-          delay(1000);
-        }
-
-        // car leave
-        turn(90);
+        open();
+        setNew(newCard);
       }
     } 
   }
   else{
-    displayMessage("Hello!", 0, 0);
+    displayMessage("Hello!"+ (carSize - count) +" spaces", 0, 0);
     displayMessage("Parking lot.", index++, 1);
     if (index >= LCDSize) index = 0;
   }
